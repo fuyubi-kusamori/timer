@@ -1,120 +1,146 @@
 <html>
-<head> 
+<head>
 <title>Count Down Timer</title>
-<meta charset="utf-8"> 
+<meta charset="utf-8">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<script>
-var interval_id;
-var start_click = false;
-var time = 10;
-var min = 0;
-var sec = 0;
-
-function count_start(){
-if(start_click === false){
-interval_id = setInterval(count_down , 1000);
-start_click = true;
-}
-}
-function count_down(){
-var display = document.getElementById('display');
-console.log(time);
-if (time === 1 ){
-display.innerHTML = '<span style="font-size: 0.7em;">TIME IS UP!</span>';
-}else{
-time--;
-min = Math.floor(time / 60);
-sen = Math.floor(time % 60);
-display.innerHTML = '0' + min +':' + sen ;
-if (sen<10) {
-display.innerHTML = '0' + min + ':' + '0' + sen;
-}
-}
-}
-
-function count_stop(){
-clearInterval(interval_id);
-start_click = false;
-}
-
-function count_reset(){
-time = 300;
-min = 0;
-sen = 0; 
-var reset = document.getElementById('display');
-reset.innerHTML = '05:00';
-clearInterval(interval_id);
-start_click = false;
-}
-
-window.onload = function(){
-count_reset();
-var start = document.getElementById('start');
-start.addEventListener('click' , count_start , false);
-var stop = document.getElementById('stop');
-stop.addEventListener('click', count_stop , false );
-var reset = document.getElementById('reset');
-reset.addEventListener('click', count_reset , false );
-}
-</script>
-
 <style>
 body {
-font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
-font-size: 3.0em;
-color: #000;
-background-image: url("sky.webp");
-background-size:cover;
-background-repeat: no-repeat;
+    font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
+    font-size: 3.0em;
+    color: #000;
+    /* 背景画像はHTMLファイルと同じ場所に sky.webp を置く想定です */
+    background-image: url("sky.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* コンテンツが少なくても背景が画面全体に表示されるように設定 */
+    min-height: 100vh;
+    margin: 0;
 }
 
 #timer {
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-padding: 15px 30px;
-color: #fff;
-text-align: center;
-width: 1200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    color: #fff;
+    text-align: center;
+    width: 1200px;
+    /* 背景を少し暗くして文字を読みやすくする（任意）*/
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .square_btn {
-display: inline-block;
-padding: 0.3em 1em;
-text-decoration: none;
-color: #67c5ff;
-border: solid 2px #67c5ff;
-border-radius: 3px;
-transition: .4s;
+    display: inline-block;
+    padding: 0.3em 1em;
+    text-decoration: none;
+    color: #67c5ff;
+    border: solid 2px #67c5ff;
+    border-radius: 3px;
+    transition: .4s;
+    cursor: pointer; /* クリックできることを示すカーソル */
+    margin: 0 10px; /* ボタン間の余白 */
 }
 
 .square_btn:hover {
-background: #67c5ff;
-color: white;
+    background: #67c5ff;
+    color: white;
 }
 
-#display{
-margin:0px; padding:0px;
-font-size: 5.0em;
+#display {
+    margin: 20px 0; /* 上下の余白を調整 */
+    padding: 0px;
+    font-size: 5.0em;
+    font-weight: bold; /* 文字を太くして見やすくする */
+    text-shadow: 2px 2px 4px #000; /* 文字に影をつけて立体感を出す */
 }
 
 </style>
-
-</head> 
+</head>
 
 <body>
+<!-- h1タグは現在空なので、必要なければ削除しても構いません -->
 <h1 id="shadow"></h1>
-<div id = 'timer'>
-<div id = 'box'>
-<p id = 'display'>05:00</p>
-<div id= 'button'>
-<a href="#"  class="square_btn" id = 'start'>START</a>
-<a href="#"  class="square_btn" id = 'stop'>STOP</a>
-<a href="#"  class="square_btn" id = 'reset'>RESET</a>
-</div>
-</div>
-</div>
-</body>
 
+<div id = 'timer'>
+    <div id = 'box'>
+        <p id = 'display'>05:00</p>
+        <div id= 'button'>
+            <a class="square_btn" id = 'start'>START</a>
+            <a class="square_btn" id = 'stop'>STOP</a>
+            <a class="square_btn" id = 'reset'>RESET</a>
+        </div>
+    </div>
+</div>
+
+<script>
+var interval_id;
+var start_click = false;
+// タイマーの残り時間を秒で管理
+var time_left = 300;
+const initial_time = 300; // 初期時間（5分 = 300秒）
+
+// 画面の表示を更新する関数
+function update_display() {
+    var display = document.getElementById('display');
+    var min = Math.floor(time_left / 60);
+    var sec = time_left % 60;
+
+    // String.padStart() を使って、常に2桁で表示（例: 5 -> "05"）
+    var display_min = String(min).padStart(2, '0');
+    var display_sec = String(sec).padStart(2, '0');
+
+    display.innerHTML = display_min + ':' + display_sec;
+}
+
+// カウントダウン処理
+function count_down() {
+    time_left--; // 1秒減らす
+
+    update_display(); // 画面を更新
+
+    if (time_left < 0) { // 00:00 を表示した後に終了
+        clearInterval(interval_id);
+        start_click = false;
+        var display = document.getElementById('display');
+        display.innerHTML = '<span style="font-size: 0.7em;">TIME IS UP!</span>';
+    }
+}
+
+// スタートボタンの処理
+function count_start() {
+    if (start_click === false && time_left >= 0) { // タイマーが終了していたら動かない
+        interval_id = setInterval(count_down, 1000);
+        start_click = true;
+    }
+}
+
+// ストップボタンの処理
+function count_stop() {
+    clearInterval(interval_id);
+    start_click = false;
+}
+
+// リセットボタンの処理
+function count_reset() {
+    clearInterval(interval_id);
+    start_click = false;
+    time_left = initial_time; // 時間を初期値に戻す
+    update_display(); // 画面表示をリセット
+}
+
+// ページ読み込み完了時の処理
+window.onload = function() {
+    // 最初に表示を整える
+    count_reset();
+
+    // 各ボタンにクリックイベントを割り当てる
+    document.getElementById('start').addEventListener('click', count_start, false);
+    document.getElementById('stop').addEventListener('click', count_stop, false);
+    document.getElementById('reset').addEventListener('click', count_reset, false);
+}
+</script>
+
+</body>
 </html>
