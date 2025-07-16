@@ -7,14 +7,15 @@
 body {
     font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
     font-size: 3.0em;
-    color: #000;
-    /* 背景画像はHTMLファイルと同じ場所に sky.webp を置く想定です */
-    background-image: url("sky.webp");
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* コンテンツが少なくても背景が画面全体に表示されるように設定 */
-    min-height: 100vh;
+    color: #fff; /* 文字色を白に変更して背景とのコントラストを改善 */
     margin: 0;
+
+    /* --- 背景に関する修正箇所 --- */
+    background-image: url("sky.webp");
+    background-size: cover;          /* 画面全体を覆うように拡大・縮小 */
+    background-repeat: no-repeat;    /* 繰り返し表示しない */
+    background-position: center center; /* 画像を常に中央に配置 */
+    background-attachment: fixed;    /* ★★★ この行が重要。背景を画面に固定します ★★★ */
 }
 
 #timer {
@@ -23,12 +24,12 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 15px 30px;
-    color: #fff;
     text-align: center;
     width: 1200px;
     /* 背景を少し暗くして文字を読みやすくする（任意）*/
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5); /* 影を追加して立体感を出す */
 }
 
 .square_btn {
@@ -39,8 +40,8 @@ body {
     border: solid 2px #67c5ff;
     border-radius: 3px;
     transition: .4s;
-    cursor: pointer; /* クリックできることを示すカーソル */
-    margin: 0 10px; /* ボタン間の余白 */
+    cursor: pointer;
+    margin: 0 10px;
 }
 
 .square_btn:hover {
@@ -49,11 +50,11 @@ body {
 }
 
 #display {
-    margin: 20px 0; /* 上下の余白を調整 */
+    margin: 20px 0;
     padding: 0px;
     font-size: 5.0em;
-    font-weight: bold; /* 文字を太くして見やすくする */
-    text-shadow: 2px 2px 4px #000; /* 文字に影をつけて立体感を出す */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000; /* 文字に影をつけて読みやすくする */
 }
 
 </style>
@@ -77,30 +78,22 @@ body {
 <script>
 var interval_id;
 var start_click = false;
-// タイマーの残り時間を秒で管理
 var time_left = 300;
 const initial_time = 300; // 初期時間（5分 = 300秒）
 
-// 画面の表示を更新する関数
 function update_display() {
     var display = document.getElementById('display');
     var min = Math.floor(time_left / 60);
     var sec = time_left % 60;
-
-    // String.padStart() を使って、常に2桁で表示（例: 5 -> "05"）
     var display_min = String(min).padStart(2, '0');
     var display_sec = String(sec).padStart(2, '0');
-
     display.innerHTML = display_min + ':' + display_sec;
 }
 
-// カウントダウン処理
 function count_down() {
-    time_left--; // 1秒減らす
-
-    update_display(); // 画面を更新
-
-    if (time_left < 0) { // 00:00 を表示した後に終了
+    time_left--;
+    update_display();
+    if (time_left < 0) {
         clearInterval(interval_id);
         start_click = false;
         var display = document.getElementById('display');
@@ -108,34 +101,27 @@ function count_down() {
     }
 }
 
-// スタートボタンの処理
 function count_start() {
-    if (start_click === false && time_left >= 0) { // タイマーが終了していたら動かない
+    if (start_click === false && time_left >= 0) {
         interval_id = setInterval(count_down, 1000);
         start_click = true;
     }
 }
 
-// ストップボタンの処理
 function count_stop() {
     clearInterval(interval_id);
     start_click = false;
 }
 
-// リセットボタンの処理
 function count_reset() {
     clearInterval(interval_id);
     start_click = false;
-    time_left = initial_time; // 時間を初期値に戻す
-    update_display(); // 画面表示をリセット
+    time_left = initial_time;
+    update_display();
 }
 
-// ページ読み込み完了時の処理
 window.onload = function() {
-    // 最初に表示を整える
     count_reset();
-
-    // 各ボタンにクリックイベントを割り当てる
     document.getElementById('start').addEventListener('click', count_start, false);
     document.getElementById('stop').addEventListener('click', count_stop, false);
     document.getElementById('reset').addEventListener('click', count_reset, false);
