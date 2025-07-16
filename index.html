@@ -6,7 +6,7 @@
 <style>
 /* ページの基本設定 */
 html, body {
-    height: 100%; /* 高さを画面いっぱいに */
+    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -14,10 +14,9 @@ html, body {
 body {
     font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
     font-size: 3.0em;
-    color: #fff; /* 背景が暗いことを想定し、文字の基本色を白に */
+    color: #fff;
 
     /* --- 背景画像の設定 --- */
-    /* ↓↓↓ ここで画像ファイルを指定しています ↓↓↓ */
     background-image: url("sky.webp");
     background-size: cover;
     background-repeat: no-repeat;
@@ -33,7 +32,7 @@ body {
     padding: 15px 30px;
     text-align: center;
     width: 1200px;
-    background-color: rgba(0, 0, 0, 0.2); /* 文字を読みやすくするための半透明の背景 */
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 
@@ -59,7 +58,6 @@ body {
     padding: 0;
     font-size: 5.0em;
     font-weight: bold;
-    /* text-shadow は削除しました */
 }
 
 </style>
@@ -78,6 +76,7 @@ body {
 </div>
 
 <script>
+// JavaScript部分は変更ありません
 var interval_id;
 var start_click = false;
 var time_left = 300;
