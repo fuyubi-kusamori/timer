@@ -4,18 +4,25 @@
 <meta charset="utf-8">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <style>
+/* ページの基本設定 */
+html, body {
+    height: 100%; /* 高さを画面いっぱいに */
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
     font-size: 3.0em;
-    color: #fff; /* 文字色を白に変更して背景とのコントラストを改善 */
-    margin: 0;
+    color: #fff; /* 背景が暗いことを想定し、文字の基本色を白に */
 
-    /* --- 背景に関する修正箇所 --- */
+    /* --- 背景画像の設定 --- */
+    /* ↓↓↓ ここで画像ファイルを指定しています ↓↓↓ */
     background-image: url("sky.webp");
-    background-size: cover;          /* 画面全体を覆うように拡大・縮小 */
-    background-repeat: no-repeat;    /* 繰り返し表示しない */
-    background-position: center center; /* 画像を常に中央に配置 */
-    background-attachment: fixed;    /* ★★★ この行が重要。背景を画面に固定します ★★★ */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
 }
 
 #timer {
@@ -26,10 +33,8 @@ body {
     padding: 15px 30px;
     text-align: center;
     width: 1200px;
-    /* 背景を少し暗くして文字を読みやすくする（任意）*/
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2); /* 文字を読みやすくするための半透明の背景 */
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5); /* 影を追加して立体感を出す */
 }
 
 .square_btn {
@@ -51,19 +56,16 @@ body {
 
 #display {
     margin: 20px 0;
-    padding: 0px;
+    padding: 0;
     font-size: 5.0em;
     font-weight: bold;
-    text-shadow: 2px 2px 4px #000; /* 文字に影をつけて読みやすくする */
+    /* text-shadow は削除しました */
 }
 
 </style>
 </head>
 
 <body>
-<!-- h1タグは現在空なので、必要なければ削除しても構いません -->
-<h1 id="shadow"></h1>
-
 <div id = 'timer'>
     <div id = 'box'>
         <p id = 'display'>05:00</p>
@@ -79,7 +81,7 @@ body {
 var interval_id;
 var start_click = false;
 var time_left = 300;
-const initial_time = 300; // 初期時間（5分 = 300秒）
+const initial_time = 300;
 
 function update_display() {
     var display = document.getElementById('display');
