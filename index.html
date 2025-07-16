@@ -4,24 +4,27 @@
 <meta charset="utf-8">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <style>
-/* ページの基本設定 */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
-    font-size: 3.0em;
-    color: #fff;
-
+/* ★★★ 変更点：背景の指定を body から html に変更 ★★★ */
+html {
     /* --- 背景画像の設定 --- */
-    background-image: url("sky.png");
+    background-image: url("sky.png"); /* PNGファイルで試す場合 */
+    /* background-image: url("sky.webp"); */ /* WebPファイルに戻す場合はこちらを有効化 */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
+    height: 100%; /* HTML要素の高さを画面いっぱいにする */
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
+    font-size: 3.0em;
+    color: #fff;
+    /* body自体の背景は透明にして、htmlの背景が見えるようにする */
+    background-color: transparent;
 }
 
 #timer {
@@ -32,6 +35,7 @@ body {
     padding: 15px 30px;
     text-align: center;
     width: 1200px;
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 
