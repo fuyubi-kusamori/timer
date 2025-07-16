@@ -3,26 +3,32 @@
 <title>Count Down Timer</title>
 <meta charset="utf-8">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
+<!-- ▼▼▼ ここから追加：Google Fonts (Josefin Sans) を読み込む ▼▼▼ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
+<!-- ▲▲▲ ここまで追加 ▲▲▲ -->
+
 <style>
-/* ★★★ 変更点：背景の指定を body から html に変更 ★★★ */
 html {
-    /* --- 背景画像の設定 --- */
-    background-image: url("sky.webp");
+    background-image: url("sky.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
-    height: 100%; /* HTML要素の高さを画面いっぱいにする */
+    height: 100%;
 }
 
 body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
+    /* ▼▼▼ ここから変更：フォントをJosefin Sansに指定 ▼▼▼ */
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300; /* 全体を細字 (Light 300) に設定 */
+    /* ▲▲▲ ここまで変更 ▲▲▲ */
     font-size: 3.0em;
     color: #fff;
-    /* body自体の背景は透明にして、htmlの背景が見えるようにする */
     background-color: transparent;
 }
 
@@ -34,6 +40,7 @@ body {
     padding: 15px 30px;
     text-align: center;
     width: 1200px;
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 
@@ -47,6 +54,7 @@ body {
     transition: .4s;
     cursor: pointer;
     margin: 0 10px;
+    font-weight: 400; /* ボタンの文字は少しだけ太くする (Regular 400) */
 }
 
 .square_btn:hover {
@@ -58,7 +66,8 @@ body {
     margin: 20px 0;
     padding: 0;
     font-size: 5.0em;
-    font-weight: bold;
+    /* ▼▼▼ 変更：font-weightをboldから細字に変更 ▼▼▼ */
+    font-weight: 300;
 }
 
 </style>
